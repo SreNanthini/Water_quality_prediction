@@ -1,4 +1,3 @@
-
 # Import all the necessary libraries
 import pandas as pd
 import numpy as np
@@ -7,7 +6,7 @@ import pickle
 import streamlit as st
 
 # Load the model and structure
-model = joblib.load("pollution_model_compressed.pkl")
+model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
 
 # Let's create an User interface
@@ -41,3 +40,34 @@ if st.button('Predict'):
         predicted_values = {}
         for p, val in zip(pollutants, predicted_pollutants):
             st.write(f'{p}:{val:.2f}')
+# visualizations 
+import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+st.markdown("---")
+st.header("📊 Visualize Water Quality Data")
+
+# load data for plotting
+@st.cache_data
+def load_data():
+    url = "https://raw.githubusercontent.com/SreNanthini/Water_quality_prediction/main/afa2e701598d20110228.csv"
+    df = pd.read_csv(url, sep=';')
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    return df
+
+df = load_data()
+
+# pick a pollutant to explore
+pollutant = st.selectbox("Pick a pollutant", ['O2', 'NO3', 'NO2', 'SO4', 'PO4', 'CL'])
+
+# avg levels by station
+st.subheader(f"Avg {pollutant} levels by Station")
+avg_data = df.groupby("id")[pollutant].mean().reset_index()
+fig1 = px.bar(avg_data, x="id", y=pollutant, title=f"Average {pollutant} across Stations")
+st.plotly_chart(fig1)
+
+# trend over time
+st.subheader(f"{pollutant} trend over time")
+fig2 = px.line(df, x="date", y=pollutant, color="id", title=f"{pollutant} trend by station")
+st.plotly_chart(fig2)
