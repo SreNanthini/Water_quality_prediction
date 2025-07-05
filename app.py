@@ -7,8 +7,8 @@ import pickle
 import streamlit as st
 
 # Load the model and structure
-model = joblib.load("C:\water_quality_prediction\pollution_model.pkl")
-model_cols = joblib.load("C:\water_quality_prediction\Water_quality_prediction\model_columns.pkl")
+model = joblib.load("pollution_model_compressed.pkl")
+model_cols = joblib.load("model_columns.pkl")
 
 # Let's create an User interface
 st.title("Water Pollutants Predictor")
