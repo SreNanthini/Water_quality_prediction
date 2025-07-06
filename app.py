@@ -15,7 +15,8 @@ st.write("Predict the water pollutants based on Year and Station ID")
 
 # User inputs
 year_input = st.number_input("Enter Year", min_value=2000, max_value=2100, value=2022)
-station_id = st.text_input("Enter Station ID", value='1')
+station_id = st.number_input_input("Enter Station ID", min_value=1,max_value=22)
+
 
 # To encode and then predict
 if st.button('Predict'):
