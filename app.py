@@ -21,7 +21,7 @@ station_id = st.number_input("Enter Station ID", min_value=1,max_value=22)
 if st.button('Predict'):
     if not station_id:
         st.warning('Please enter the station ID')
-     elif station_id > 22:
+    elif station_id > 22:
         st.error("Invalid Station ID. Please enter a value between 1 and 22.")
     else:
         # Prepare the input
