@@ -52,9 +52,6 @@ if st.button('Predict'):
             for p, val in zip(pollutants, predicted_pollutants):
                 st.write(f"{p}: {val:.2f}")
 
-
-
-
 # visualizations 
 import plotly.express as px
 import matplotlib.pyplot as plt
