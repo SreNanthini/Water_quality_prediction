@@ -6,7 +6,7 @@ import pickle
 import streamlit as st
 
 # Load the model and structure
-model = joblib.load("pollution_model_compressed.pkl")
+model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
 
 # Let's create an User interface
@@ -17,11 +17,12 @@ st.write("Predict the water pollutants based on Year and Station ID")
 year_input = st.number_input("Enter Year", min_value=2000, max_value=2100, value=2022)
 station_id = st.number_input("Enter Station ID", min_value=1,max_value=22)
 
-
 # To encode and then predict
 if st.button('Predict'):
     if not station_id:
         st.warning('Please enter the station ID')
+     elif station_id > 22:
+        st.error("Invalid Station ID. Please enter a value between 1 and 22.")
     else:
         # Prepare the input
         input_df = pd.DataFrame({'year': [year_input], 'id':[station_id]})
