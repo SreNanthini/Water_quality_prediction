@@ -6,7 +6,7 @@ import pickle
 import streamlit as st
 
 # Load the model and structure
-model = joblib.load("pollution_model.pkl")
+model = joblib.load("pollution_model_compressed.pkl")
 model_cols = joblib.load("model_columns.pkl")
 
 # Let's create an User interface
