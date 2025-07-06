@@ -20,22 +20,22 @@ station_id = st.number_input("Enter Station ID", min_value=1,max_value=22)
 # VALID Station IDs used during training
 valid_station_ids = list(range(1, 23))  # IDs 1 to 22
 
-# Predict button
 if st.button('Predict'):
-    if year_input < 2000 or year_input > 2100:
-        st.error("❌ Invalid Year: Please enter a year between 2000 and 2100.")
-        st.subheader("⚠️ Please enter correct inputs to see predictions.")
+    # Check if inputs are in valid range
+    if not (2000 <= year_input <= 2100):
+        st.error("❌ Please enter a valid year between 2000 and 2100.")
+        st.subheader("⚠️ Prediction not possible. Correct the inputs.")
         
-    elif station_id not in valid_station_ids:
-        st.error("❌ Invalid Station ID: Please enter a Station ID between 1 and 22.")
-        st.subheader("⚠️ Please enter correct inputs to see predictions.")
+    elif not (1 <= station_id <= 22):
+        st.error("❌ Please enter a valid Station ID between 1 and 22.")
+        st.subheader("⚠️ Prediction not possible. Correct the inputs.")
         
     else:
-        # Input is valid, proceed with prediction
+        # Valid input → proceed to predict
         input_df = pd.DataFrame({'year': [year_input], 'id': [station_id]})
         input_encoded = pd.get_dummies(input_df, columns=['id'])
 
-        # Align with model columns
+        # Add any missing columns
         for col in model_cols:
             if col not in input_encoded.columns:
                 input_encoded[col] = 0
@@ -47,7 +47,7 @@ if st.button('Predict'):
 
         st.subheader(f"✅ Predicted pollutant levels for Station ID {station_id} in {year_input}:")
         for p, val in zip(pollutants, predicted_pollutants):
-            st.write(f'{p}: {val:.2f}')
+            st.write(f"{p}: {val:.2f}")
 
 
 
