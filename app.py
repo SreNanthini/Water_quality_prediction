@@ -20,15 +20,15 @@ station_id = st.number_input("Enter Station ID", min_value=1,max_value=22)
 # To encode and then predict
 if st.button('Predict'):
     if not station_id:
-        st.warning('Please enter the station ID')
-    elif station_id > 22:
-        st.error("Invalid Station ID. Please enter a value between 1 and 22.")
+        st.warning('Please enter the Station ID')
+    elif station_id not in list(range(1, 23)):
+        st.error("❌ Invalid Station ID. Please enter a value from 1 to 22.")
     else:
         # Prepare the input
-        input_df = pd.DataFrame({'year': [year_input], 'id':[station_id]})
+        input_df = pd.DataFrame({'year': [year_input], 'id': [station_id]})
         input_encoded = pd.get_dummies(input_df, columns=['id'])
 
-        # Align with model cols
+        # Align with model columns
         for col in model_cols:
             if col not in input_encoded.columns:
                 input_encoded[col] = 0
@@ -38,10 +38,10 @@ if st.button('Predict'):
         predicted_pollutants = model.predict(input_encoded)[0]
         pollutants = ['O2', 'NO3', 'NO2', 'SO4', 'PO4', 'CL']
 
-        st.subheader(f"Predicted pollutant levels for the station '{station_id}' in {year_input}:")
-        predicted_values = {}
+        st.subheader(f"Predicted pollutant levels for Station ID '{station_id}' in {year_input}:")
         for p, val in zip(pollutants, predicted_pollutants):
-            st.write(f'{p}:{val:.2f}')
+            st.write(f"{p}: {val:.2f}")
+
 # visualizations 
 import plotly.express as px
 import matplotlib.pyplot as plt
