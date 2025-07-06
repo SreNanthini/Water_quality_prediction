@@ -18,23 +18,23 @@ year_input = st.number_input("Enter Year", min_value=2000, max_value=2100, value
 station_id = st.number_input("Enter Station ID", min_value=1,max_value=22)
 
 if st.button('Predict'):
-    # Check both inputs before proceeding
+    # Strict input validation
     if year_input < 2000 or year_input > 2100:
-        st.error("❌ Invalid Year. Please enter a year between 2000 and 2100.")
+        st.error("❌ Please enter a valid year between 2000 and 2100.")
     elif station_id not in range(1, 23):
-        st.error("❌ Invalid Station ID. Please enter a value from 1 to 22.")
+        st.error("❌ Please enter a valid Station ID between 1 and 22.")
     else:
-        # Prepare the input
+        # Proceed only if both inputs are valid
         input_df = pd.DataFrame({'year': [year_input], 'id': [station_id]})
         input_encoded = pd.get_dummies(input_df, columns=['id'])
 
-        # Align with model cols
+        # Fill missing dummy columns
         for col in model_cols:
             if col not in input_encoded.columns:
                 input_encoded[col] = 0
         input_encoded = input_encoded[model_cols]
 
-        # Predict
+        # Make prediction
         predicted_pollutants = model.predict(input_encoded)[0]
         pollutants = ['O2', 'NO3', 'NO2', 'SO4', 'PO4', 'CL']
 
